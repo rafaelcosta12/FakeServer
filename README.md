@@ -1,10 +1,10 @@
 # FakeServer
 
-Servidor falso para monitorar e interagir com comunicação socket TCP.
+Servidor falso para monitorar, depurar e interagir com comunicação socket TCP.
 
 ## Descrição
 
-Este servidor encaminha conexões TCP entre um cliente e um servidor real, permitindo inspecionar e injetar comandos nos fluxos de dados de ambos os lados via sockets de debug.
+O FakeServer atua como um proxy transparente entre um cliente e um servidor TCP reais, permitindo inspecionar, modificar e injetar comandos nos fluxos de dados de ambos os lados em tempo real, através de sockets de debug dedicados.
 
 - **DbgServerAddr**: Permite injetar comandos no socket do servidor (simulando o cliente).
 - **DbgClientAddr**: Permite injetar comandos no socket do cliente (simulando o servidor).
@@ -59,5 +59,16 @@ nc 127.0.0.1 8889
 ```
 
 O que for enviado por esses sockets será encaminhado para o destino correspondente.
+
+---
+
+## Ideias de uso
+
+- **Depuração de protocolos proprietários:** Intercepte e modifique mensagens trocadas entre cliente e servidor para entender protocolos fechados.
+- **Testes de robustez:** Injete dados inválidos ou inesperados para testar a resiliência do servidor ou cliente.
+- **Simulação de falhas:** Interrompa, atrase ou altere pacotes para simular condições de rede adversas.
+- **Desenvolvimento de clientes/servidores:** Use o FakeServer como um stub para testar implementações sem depender do sistema real.
+- **Auditoria de segurança:** Analise o tráfego para identificar possíveis vulnerabilidades ou comportamentos inesperados.
+- **Automação de testes:** Integre o FakeServer em pipelines de CI/CD para validar fluxos de comunicação em diferentes cenários.
 
 ---
