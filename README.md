@@ -9,6 +9,8 @@ Este servidor encaminha conexões TCP entre um cliente e um servidor real, permi
 - **DbgServerAddr**: Permite injetar comandos no socket do servidor (simulando o cliente).
 - **DbgClientAddr**: Permite injetar comandos no socket do cliente (simulando o servidor).
 
+![Diagrama do FakeServer](image.png)
+
 ## Uso
 
 Compile o servidor:

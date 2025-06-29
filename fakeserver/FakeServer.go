@@ -49,7 +49,7 @@ func addDebugForwarder(fwdConn net.Conn, listenAddr string, destination string) 
 		go func() {
 			defer debugConn.Close()
 			log.Printf("[*] Debug connection established %s --> %s", debugConn.RemoteAddr(), destination)
-			forwardMessages(debugConn, fwdConn, "debug->"+destination, true)
+			forwardMessages(debugConn, fwdConn, "debug->"+destination)
 		}()
 	}
 }
@@ -78,11 +78,11 @@ func handleMessageFowarders(clientConn net.Conn, serverConn net.Conn) {
 
 	go func() {
 		defer wg.Done()
-		forwardMessages(clientConn, serverConn, "client", false)
+		forwardMessages(clientConn, serverConn, "client")
 	}()
 	go func() {
 		defer wg.Done()
-		forwardMessages(serverConn, clientConn, "server", false)
+		forwardMessages(serverConn, clientConn, "server")
 	}()
 
 	wg.Wait()
@@ -90,7 +90,7 @@ func handleMessageFowarders(clientConn net.Conn, serverConn net.Conn) {
 	serverConn.Close()
 }
 
-func forwardMessages(src net.Conn, dst net.Conn, direction string, appendZero bool) {
+func forwardMessages(src net.Conn, dst net.Conn, direction string) {
 	buf := make([]byte, 4096)
 	for {
 		n, err := src.Read(buf)
@@ -100,14 +100,6 @@ func forwardMessages(src net.Conn, dst net.Conn, direction string, appendZero bo
 			if writeErr != nil {
 				log.Printf("Error writing to client: %v", writeErr)
 				return
-			}
-			if appendZero {
-				// Append a zero byte to the end of the message
-				_, writeErr = dst.Write([]byte{0})
-				if writeErr != nil {
-					log.Printf("Error writing zero byte to client: %v", writeErr)
-					return
-				}
 			}
 		}
 		if err != nil {
